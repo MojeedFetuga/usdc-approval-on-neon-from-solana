@@ -1,0 +1,16 @@
+{
+  "name": "usdc-approval-neon-solana",
+  "version": "1.0.0",
+  "description": "Schedule a USDC approval transaction from Solana wallet on Neon EVM Devnet",
+  "main": "token-approval-solana-signer-sdk.js",
+  "scripts": {
+    "start": "node token-approval-solana-signer-sdk.js"
+  },
+  "dependencies": {
+    "@neonevm/solana-sign": "^1.0.0",
+    "@solana/web3.js": "^1.80.1",
+    "ethers": "^6.7.0",
+    "bs58": "^5.0.0",
+    "dotenv": "^16.3.1"
+  }
+}
