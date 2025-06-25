@@ -1,72 +1,119 @@
-# USDC Approval via Solana Wallet on Neon EVM (Devnet)
+# 🔄 USDC Approval & Transfer from Solana to Neon EVM
 
-This script demonstrates how to use a Solana wallet to schedule a USDC `approve()` transaction on Neon EVM Devnet.  
-It uses the `@neonevm/solana-sign` SDK to bridge Solana and Ethereum-compatible smart contract calls.
-
----
-
-## ✨ Features
-
-- Connects to Solana Devnet and Neon EVM Devnet
-- Loads Solana wallet from Base58 private key
-- Uses Ethers.js to interact with the USDC contract
-- Sends a scheduled `approve()` transaction on Neon
-- Checks USDC allowance before and after the transaction
+This project demonstrates how to approve and transfer USDC tokens from a Solana native wallet to a Neon EVM-compatible address using the [@neonevm/solana-sign](https://www.npmjs.com/package/@neonevm/solana-sign) SDK and Solana's SPL Token standard.
 
 ---
 
-## 📦 Installation
+## ✅ Features
+
+- Approve a Solana user's USDC for use on Neon EVM
+- Transfer USDC from a Solana ATA to a Neon EVM wallet
+- Auto-create associated token accounts and balance accounts if missing
+- Interact with Neon EVM's JSON-RPC API
+- Includes full transaction flow, gas estimation, and signature logging
+
+---
+
+## 🧰 Tech Stack
+
+- Solana Web3.js
+- SPL Token SDK
+- Neon EVM Solana Signer SDK
+- Node.js + dotenv
+- Ethereum's Ethers.js
+- JSON-RPC via Curl or Fetch
+
+---
+
+## ⚙️ Setup Instructions
+
+1. **Clone the Repo**
 
 ```bash
 git clone https://github.com/MojeedFetuga/usdc-approval-on-neon-from-solana.git
 cd usdc-approval-on-neon-from-solana
-npm install
+```
 
-
-# ✅ USDC Approval on Neon EVM from Solana Wallet
-
-This script demonstrates how to schedule a `USDC.approve()` transaction on **Neon EVM Devnet** using a **Solana wallet**. It leverages the [@neonevm/solana-sign](https://www.npmjs.com/package/@neonevm/solana-sign) SDK to sign and schedule transactions that interact with Ethereum-based contracts via the Neon EVM.
-
----
-
-## 🔧 Prerequisites
-
-- Node.js `v18+` or `v20+`
-- A funded Solana wallet on Devnet
-- `.env` file with your Base58 private key
-
----
-
-## 📁 Folder Setup
+2. **Install Dependencies**
 
 ```bash
-git clone https://github.com/MojeedFetuga/usdc-approval-on-neon-from-solana.git
-cd usdc-approval-on-neon-from-solana
 npm install
-Create a .env file and add:
-PRIVATE_KEY_SOLANA=your_base58_private_key
+```
 
-🚀 Usage
-Run the approval script:
+3. **Setup Environment Variables**
 
-npm start
-✅ What Happens
-Check Existing Allowance
-The script fetches the current allowance from the Neon EVM Devnet:
+Create a `.env` file and add your Solana private key (Base58-encoded):
 
-Current USDC approval of 0x4e91835921a6a99e318fefa39b300d7ca318fa21 is 1750787869n
+```env
+PRIVATE_KEY_SOLANA=YOUR_BASE58_ENCODED_SECRET_KEY
+```
 
-Schedule a USDC Approval Transaction
-The script builds a transaction to approve 0x4e918359... to spend tokens and schedules it:
+You can find a template in `.env.example`.
 
-Scheduled transaction signature:
-3FjKDDoLfMHsdkQkCNX4HyKggFsaNTVW69VaXnu7523B35P7ma4LuZbp3bAMBe9vwKLNxkPHq3iKjqePLv1y45yJ
+4. **Run Approval Script**
 
-Broadcast to Neon EVM Devnet
-After submitting the scheduled transaction, the Neon EVM transaction hash is returned:
+```bash
+node token-approval-solana-signer-sdk.js
+```
 
-Neon EVM transaction hash:
-0xb15ae8ef92da808757b1b98ff23bedb89b62773dd8cd90827a93d181f9f96ffc
-View on Explorer (if available)
-You can search the transaction hash on a Neon Devnet block explorer (if public).
+---
 
+## ✅ Execution Proof
+
+- USDC Approval Transaction initiated:
+
+  ```
+  Scheduled transaction signature: 3FjKDDoLfMHsdkQkCNX4HyKggFsaNTVW69VaXnu7523B35P7ma4LuZbp3bAMBe9vwKLNxkPHq3iKjqePLv1y45yJ
+  ```
+
+- Neon EVM TX hash (confirmation):
+
+  ```
+  Neon EVM transaction hash: 0xb15ae8ef92da808757b1b98ff23bedb89b62773dd8cd90827a93d181f9f96ffc
+  ```
+
+- Curl requests confirmed:
+  - `eth_chainId`
+  - `neon_getEvmParams`
+  - `neon_getNativeTokenList`
+  - `eth_getTransactionCount`
+  - `eth_maxPriorityFeePerGas`
+  - `eth_getBlockByNumber`
+  - `neon_estimateScheduledGas`
+
+- ✅ **Token balance verified before and after transfer**
+- ✅ **Gas estimate returned and included**
+- ✅ **Solana ATA auto-created if missing**
+- ✅ **Transaction submitted and processed successfully on Neon Devnet**
+
+---
+
+## 🧪 Transaction Testing (Using Curl)
+
+You can verify Neon EVM status using:
+
+```bash
+curl https://devnet.neonevm.org/sol -X POST \
+-H 'Content-Type: application/json' \
+-d '{{"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}}' | jq .
+```
+
+Also use `neon_getTransactionBySenderNonce` to confirm transaction:
+
+```bash
+curl https://devnet.neonevm.org/sol -X POST \
+-H 'Content-Type: application/json' \
+-d '{{"method":"neon_getTransactionBySenderNonce","params":["0xYourNeonWallet", nonce],"id":1,"jsonrpc":"2.0"}}' | jq .
+```
+
+---
+
+## 🔒 Security Note
+
+Do **not** commit your private keys. Use `.env` and `.gitignore` wisely.
+
+---
+
+## 📜 License
+
+MIT License
