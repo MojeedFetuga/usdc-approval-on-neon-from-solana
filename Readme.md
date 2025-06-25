@@ -117,3 +117,11 @@ Do **not** commit your private keys. Use `.env` and `.gitignore` wisely.
 ## 📜 License
 
 MIT License
+
+MY OutPut 2:
+node token-approval-solana-signer-sdk.js
+Scheduled transaction signature 5AwPLKiu7EYSajw8r52fErMQXCH188U9yXk3GzwAPxM2xvAMFNhwREsyDdqNfyUVmc5huYeQ3eknyxztaVvfZMvz
+
+ Awaiting transaction finalization on Neon EVM ...
+Neon EVM transaction hash 0xd8a93d935427fd6775bb1a550d359d085b7c6ddec30e0296c3d86f2b659cfb24
+Current USDC approval of  0x4e91835921a6a99e318fefa39b300d7ca318fa21 is 1750848329n
